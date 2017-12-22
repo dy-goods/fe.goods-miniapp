@@ -1,0 +1,20 @@
+{
+  "name": "fe.money",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@mtfe/wets": "^1.1.0-beta.2",
+    "@mtfe/wets-cli": "^0.1.21",
+    "@mtfe/wets-graphql": "^1.1.0-beta.1",
+    "@mtfe/wets-redux": "^1.1.0-beta.1",
+    "@mtfe/wets-types": "^1.1.0-beta.5",
+    "@mtfe/wets-wx-extra": "^1.1.0-beta.2",
+    "tslib": "^1.8.1",
+    "typescript": "^2.6.2"
+  },
+  "scripts": {
+    "start": "wets start",
+    "build": "wets build",
+    "build:prod": "wets build -p"
+  }
+}
