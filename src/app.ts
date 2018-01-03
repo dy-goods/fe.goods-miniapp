@@ -1,13 +1,6 @@
 import { App } from '@mtfe/wets';
-import { Provider, Client, createNetworkInterface } from '@mtfe/wets-graphql';
-
-const networkInterface = createNetworkInterface({
-  url: '127.0.0.1:8080',
-});
-const client = new Client({
-  networkInterface,
-});
-const store: any = null;
+import { Provider } from '../src/wets-mobx';
+import store from '../src/stores';
 
 @App.Conf({
   window: {
@@ -17,8 +10,8 @@ const store: any = null;
   },
 })
 @Provider({
-  client,
   store,
 })
 export class MyApp extends App {
+  store: any;
 }

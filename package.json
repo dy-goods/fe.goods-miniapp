@@ -9,6 +9,7 @@
     "@mtfe/wets-redux": "^1.1.0-beta.1",
     "@mtfe/wets-types": "^1.1.0-beta.5",
     "@mtfe/wets-wx-extra": "^1.1.0-beta.2",
+    "redux": "^3.7.2",
     "tslib": "^1.8.1",
     "typescript": "^2.6.2"
   },
@@ -16,5 +17,8 @@
     "start": "wets start",
     "build": "wets build",
     "build:prod": "wets build -p"
+  },
+  "dependencies": {
+    "mobx": "^3.4.1"
   }
 }
