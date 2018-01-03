@@ -1,14 +1,14 @@
 import { observable, computed, action } from "mobx";
 export default class Person {
-  @observable name = "洛丹";
+  @observable random = Math.random();
 
   @action
-  changeName(name: string) {
-    this.name = name;
+  changeRandom() {
+    this.random = Math.random();
   }
-  
+
   @computed
-  get fullName() {
-    return "帅帅的" + this.name;
+  get fullRandom() {
+    return "帅帅的" + this.random;
   }
 }

@@ -51,7 +51,10 @@ const observer = () => <T extends Constructor<Page>>(PageConstructor: T) => {
             try {
               isForcingUpdate = true;
               if (!skipRender) {
-                extras.allowStateChanges(true, () => this.setData(this.data));
+                this.reaction.track(() => {
+                  isRenderingPending = false;
+                  extras.allowStateChanges(true, () => this.setData(this.data));
+                });
               };
               hasError = false;
             } finally {

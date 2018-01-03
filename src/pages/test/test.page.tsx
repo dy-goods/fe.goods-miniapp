@@ -16,13 +16,13 @@ export class TestPage extends Page<any, {
     console.log(this.data.test);
   }
   test() {
-    this.data.test.changeName('test');
+    this.data.test.changeRandom();
   }
   render() {
     return (
       <view className="test-page">
-        <text>{this.data.test.name}</text>
-        <button bindtap={this.test}>changeName</button>
+        <text>{this.data.test.random}</text>
+        <button bindtap={this.test}>changeRandom</button>
       </view>
     );
   }
