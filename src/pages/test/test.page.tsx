@@ -2,7 +2,7 @@ import { Page } from '@mtfe/wets';
 
 import './test.page.css';
 import TestStore from '../../stores/test';
-import { inject, observer } from '../../wets-mobx';
+import { inject, observer } from '@mtfe/wets-mobx';
 import { autorun } from 'mobx';
 
 @Page.Conf({
