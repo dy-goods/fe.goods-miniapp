@@ -1,16 +1,19 @@
 export interface Constructor<T> {
   new (...args: any[]): T;
 }
-export function isObjectShallowModified(prev: {
-  [key: string]: any
-}, next: {
-  [key: string]: any
-}) {
+export function isObjectShallowModified(
+  prev: {
+    [key: string]: any;
+  },
+  next: {
+    [key: string]: any;
+  }
+) {
   if (
     null == prev ||
     null == next ||
-    typeof prev !== "object" ||
-    typeof next !== "object"
+    typeof prev !== 'object' ||
+    typeof next !== 'object'
   ) {
     return prev !== next;
   }

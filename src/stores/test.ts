@@ -1,4 +1,4 @@
-import { observable, computed, action } from "mobx";
+import { observable, action, computed } from "mobx";
 export default class Person {
   @observable random = Math.random();
 

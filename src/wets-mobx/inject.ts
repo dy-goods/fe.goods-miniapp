@@ -13,11 +13,6 @@ const createStoreInjector = <T extends Constructor<Page>>(
   PageConstructor: T
 ) =>
   class Injector extends PageConstructor {
-    isMobxInjector = true;
-    props: {
-      [key: string]: any
-    } = {};
-
     onLoad(options: { [key: string]: any }) {
       const app = getApp();
       if (!app.store) {
@@ -29,7 +24,6 @@ const createStoreInjector = <T extends Constructor<Page>>(
       Object.assign(data, options);
       const additionalProps = grabStoresFn(app.store || {}, data) || {};
       Object.assign(data, additionalProps);
-      Object.assign(this.props, additionalProps);
       this.setData(data);
       if (super["onLoad"]) {
         super["onLoad"](options);
@@ -48,38 +42,29 @@ function grabStoresByName(storeNames: string[]) {
     baseStores: {
       [key: string]: any;
     },
-    nextProps: {
+    pageData: {
       [key: string]: any;
     }
   ) => {
     storeNames.forEach(storeName => {
-      if (
-        storeName in nextProps // prefer props over stores
-      )
-        return;
+      if (storeName in pageData) return;
       if (!(storeName in baseStores))
         throw new Error(
           "MobX injector: Store '" +
             storeName +
             "' is not available! Make sure it is provided by some Provider"
         );
-      nextProps[storeName] = baseStores[storeName];
+      pageData[storeName] = baseStores[storeName];
     });
-    return nextProps;
+    return pageData;
   };
 }
 
-/**
- * higher order component that injects stores to a child.
- * takes either a varargs list of strings, which are stores read from the context,
- * or a function that manually maps the available stores from the context to props:
- * storesToProps(mobxStores, props, context) => newProps
- */
 export default function inject(
   ...args: any[] /* fn(stores, nextProps) or ...storeNames */
 ) {
-  const storeNames: string[] = args;
-  const grabStoresFn = grabStoresByName(storeNames);
+  const grabStoresFn =
+    typeof args[0] === "function" ? args[0] : grabStoresByName(args);
   return <T extends Constructor<Page>>(PageConstructor: T) =>
     createStoreInjector(grabStoresFn, PageConstructor);
 }

@@ -34,14 +34,11 @@ const observer = () => <T extends Constructor<Page>>(PageConstructor: T) => {
         });
       };
 
-      makePropertyObservableReference('data');
+      makePropertyObservableReference("data");
 
       let isRenderingPending = false;
       this.reaction = new Reaction(`${this.route}/reaction`, () => {
         if (!isRenderingPending) {
-          // N.B. Getting here *before mounting* means that a component constructor has side effects (see the relevant test in misc.js)
-          // This unidiomatic React usage but React will correctly warn about this so we continue as usual
-          // See #85 / Pull #44
           isRenderingPending = true;
           if (this.pageWillReceiveData) {
             this.pageWillReceiveData();
@@ -55,7 +52,7 @@ const observer = () => <T extends Constructor<Page>>(PageConstructor: T) => {
                   isRenderingPending = false;
                   extras.allowStateChanges(true, () => this.setData(this.data));
                 });
-              };
+              }
               hasError = false;
             } finally {
               isForcingUpdate = false;
@@ -68,15 +65,15 @@ const observer = () => <T extends Constructor<Page>>(PageConstructor: T) => {
         isRenderingPending = false;
         extras.allowStateChanges(true, () => this.setData(this.data));
       });
-      if (super['onLoad']) {
-        super['onLoad']();
+      if (super["onLoad"]) {
+        super["onLoad"]();
       }
     }
     onUnload() {
       this.reaction.dispose();
       this.__$mobxIsUnmounted = true;
-      if (super['onUnload']) {
-        super['onUnload']();
+      if (super["onUnload"]) {
+        super["onUnload"]();
       }
     }
   };
