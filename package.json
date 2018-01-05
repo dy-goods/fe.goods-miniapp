@@ -19,7 +19,7 @@
     "build:prod": "wets build -p"
   },
   "dependencies": {
-    "@mtfe/wets-mobx": "^1.0.2",
+    "@mtfe/wets-mobx": "^1.0.6",
     "mobx": "^3.4.1"
   }
 }

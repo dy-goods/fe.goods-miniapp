@@ -1,6 +1,13 @@
 import { App } from '@mtfe/wets';
 import { Provider } from '@mtfe/wets-mobx';
+import { route } from '@mtfe/wets-mobx';
+
 import store from '../src/stores';
+
+route.prototype.setUrlOption({
+  protocol: 'https',
+  host: 'cnodejs.org'
+});
 
 @App.Conf({
   window: {

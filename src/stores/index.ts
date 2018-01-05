@@ -1,5 +1,5 @@
-import Test from './test';
 import { useStrict } from 'mobx';
+import Test from './test';
 
 useStrict(true);
 const test = new Test();
