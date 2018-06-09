@@ -3,9 +3,11 @@ import { inject, observer, autorun } from '@mtfe/wets-mobx';
 
 import './test.page.css';
 import TestStore from '../../stores/test';
+import GoodsStore from '../../stores/goods';
 
 interface IData {
-  test: TestStore;
+  testStore: TestStore;
+  goodsStore: GoodsStore;
   fullRandom: string;
   tabIndex: number;
   tabArray: string[];
@@ -14,7 +16,7 @@ interface IData {
 @Page.Conf({
   navigationBarTitleText: 'TestPage'
 })
-@inject('test')
+@inject('testStore')
 @observer()
 export class TestPage extends Page<any, IData> {
   onLoad() {
@@ -25,17 +27,17 @@ export class TestPage extends Page<any, IData> {
     });
     autorun(() =>
       this.setData({
-        fullRandom: this.data.test.fullRandom
+        fullRandom: this.data.testStore.fullRandom
       })
     );
   }
 
   test() {
-    this.data.test.changeRandom();
+    this.data.testStore.changeRandom();
   }
 
   getTopicList() {
-    this.data.test.getTopicList(this.data.tabArray[this.data.tabIndex]);
+    this.data.testStore.getTopicList(this.data.tabArray[this.data.tabIndex]);
   }
 
   bindPickerChange(e: any) {
@@ -65,7 +67,7 @@ export class TestPage extends Page<any, IData> {
         </view>
         <button bindtap={this.getTopicList}>get topic list</button>
         <view className='topicList'>
-          {this.data.test.topicList.map((topic, index) => {
+          {this.data.testStore.topicList.map((topic, index) => {
             return (
               <view key={index}>
                 {index}: {topic.title}
