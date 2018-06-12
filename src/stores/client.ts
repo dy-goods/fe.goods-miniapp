@@ -101,6 +101,31 @@ export class Client {
   }
 }
 
+export type Method = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "HEAD";
+
+export function request(url: string, method: Method, data: object) {
+  return new Promise<{
+    data: any;
+    statusCode: number;
+    header: object;
+  }>((resolve, reject) => {
+    wx.request({
+      url,
+      data,
+      method,
+      header: {
+        "content-type": "application/json"
+      },
+      success(res: any) {
+        resolve(res);
+      },
+      fail(error: Error) {
+        reject(error);
+      }
+    });
+  });
+}
+
 const networkInterface = createNetworkInterface({
   url: "https://www.53zi.com/graphql"
 });

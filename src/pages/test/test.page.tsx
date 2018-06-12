@@ -37,7 +37,7 @@ export class TestPage extends Page<any, IData> {
   }
 
   getTopicList() {
-    this.data.testStore.getTopicList(this.data.tabArray[this.data.tabIndex]);
+    this.data.testStore.getTopicList1(this.data.tabArray[this.data.tabIndex]);
   }
 
   bindPickerChange(e: any) {

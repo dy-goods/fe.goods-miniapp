@@ -1,2 +1,43 @@
 .goods-page {
+  overflow: hidden;
+  position: relative;
+  #video-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+  }
+  #my-canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+  .controls {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    .play,
+    .pause,
+    .text,
+    .time {
+      height: 50px;
+      border: 1px solid red;
+      color: blue;
+    }
+    .time {
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      line-height: 50px;
+    }
+    .img {
+      width: 100%;
+      height: 100%;
+      margin: 5px auto;
+    }
+  }
 }
