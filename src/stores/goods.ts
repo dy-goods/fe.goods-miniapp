@@ -56,7 +56,6 @@ export default class GoodsStore {
     this.currentGoods.updatedAt = goods.updatedAt;
     this.currentGoods.videoUrl = goods.videoUrl;
     this.videoUrl = goods.videoUrl;
-    console.log(this.currentGoods.videoUrl);
   };
 
   @action

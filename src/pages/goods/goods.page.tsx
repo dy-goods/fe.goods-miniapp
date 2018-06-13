@@ -32,10 +32,9 @@ export class GoodsPage extends Page<any, IData> {
     this.videoCtx = wx.createVideoContext("video-container");
     // this.videoCtx.requestFullScreen(0);
     const rect = wx.getSystemInfoSync();
-    console.log(rect);
     this.setData({
-      screenWidth: rect.windowWidth,
-      screenHeight: rect.windowHeight,
+      screenWidth: rect.screenWidth,
+      screenHeight: rect.screenHeight,
     });
     // screenWidth	屏幕宽度, windowWidth	可使用窗口宽度
     this.test();
@@ -106,18 +105,19 @@ export class GoodsPage extends Page<any, IData> {
           this.data.screenHeight
         }px`}
       >
-        {/* <view>{this.data.goodsStore.currentGoods.videoUrl}</view> */}
-        <video
+        <view className="test">{this.data.goodsStore.currentGoods.videoUrl}</view>
+        {/* <video
           id="video-container"
           src={this.data.goodsStore.currentGoods.videoUrl}
           controls={false}
           show-play-btn={false}
           show-center-play-btn={true}
           autoplay={true}
+          loop={true}
           direction={0}
           objectFit="contain"
           event-model="bubble"
-        />
+        /> */}
         <canvas
           id="my-canvas"
           canvas-id="my-canvas"

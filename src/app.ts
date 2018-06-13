@@ -14,6 +14,7 @@ route.prototype.setUrlOption({
     navigationBarBackgroundColor: '#fff',
     navigationBarTextStyle: 'black',
     backgroundColor: '#fff',
+    navigationStyle: 'custom',
   },
 })
 @Provider({

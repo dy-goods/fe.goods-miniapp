@@ -1,6 +1,10 @@
 .goods-page {
   overflow: hidden;
   position: relative;
+  .test {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
   #video-container {
     position: absolute;
     width: 100%;
