@@ -28,7 +28,7 @@ export class TestPage extends Page<IProps, IData> {
     });
     autorun(() =>
       this.setData({
-        fullRandom: this.data.testStore.fullRandom
+        fullRandom: this.props.testStore.fullRandom
       })
     );
   }

@@ -107,8 +107,7 @@ export class GoodsPage extends Page<IProps, IData> {
           this.data.screenHeight
         }px`}
       >
-        <view className="test">{this.data.goodsStore.currentGoods.videoUrl}</view>
-        {/* <video
+        <video
           id="video-container"
           src={this.data.goodsStore.currentGoods.videoUrl}
           controls={false}
@@ -119,7 +118,7 @@ export class GoodsPage extends Page<IProps, IData> {
           direction={0}
           objectFit="contain"
           event-model="bubble"
-        /> */}
+        />
         <canvas
           id="my-canvas"
           canvas-id="my-canvas"
