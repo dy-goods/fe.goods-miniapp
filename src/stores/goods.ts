@@ -4,14 +4,13 @@ import gql from "graphql-tag";
 
 export default class GoodsStore {
   goodsList: IObservableArray<GOODS.IGoodsType> = observable([]);
-  pageInfo: IPage = observable({
+  @observable pageInfo: IPage = {
     pageNo: 1,
     pageSize: 10,
     totalCount: 0,
     totalPageCount: 1
-  });
-  @observable videoUrl = 'http://7xtj85.com1.z0.glb.clouddn.com/1527589552.mp4';
-  currentGoods: GOODS.IGoodsType = observable({
+  };
+  @observable currentGoods: GOODS.IGoodsType = {
     id: "",
     isDeleted: false,
     createdAt: 0,
@@ -29,34 +28,24 @@ export default class GoodsStore {
     taobaoPrice: 0, // 淘宝价格
     discount: 0, // 折扣
     labels: "", // 标签, eg好玩到爆，省事的气球车
-  });
-
+  };
   @action
   setCurrentGoods() {
+    let index = 0;
     if (this.goodsList && this.goodsList.length) {
-      if (!this.currentGoods) {
-        this._setGoods(this.goodsList[0]);
-      } else {
-        let index = this.goodsList.findIndex(
+      if (this.currentGoods) {
+        index = this.goodsList.findIndex(
           goods => goods.id === this.currentGoods.id
         );
         index += 1;
         if (index === this.goodsList.length) {
           index = 0;
         }
-        this._setGoods(this.goodsList[index]);
       }
     }
+    const goods = this.goodsList[index];
+    this.currentGoods = goods;
   }
-  @action
-  _setGoods(goods: GOODS.IGoodsType) {
-    this.currentGoods.id = goods.id;
-    this.currentGoods.isDeleted = goods.isDeleted;
-    this.currentGoods.createdAt = goods.createdAt;
-    this.currentGoods.updatedAt = goods.updatedAt;
-    this.currentGoods.videoUrl = goods.videoUrl;
-    this.videoUrl = goods.videoUrl;
-  };
 
   @action
   async getGoodsList() {
@@ -100,10 +89,7 @@ export default class GoodsStore {
     if (items && items.length) {
       runInAction(() => {
         this.goodsList.replace(items);
-        this.pageInfo.pageNo = page.pageNo;
-        this.pageInfo.pageSize = page.pageSize;
-        this.pageInfo.totalCount = page.pageSize;
-        this.pageInfo.totalPageCount = page.totalPageCount;
+        this.pageInfo = page;
       });
       return items;
     }

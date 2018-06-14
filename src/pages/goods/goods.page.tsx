@@ -3,17 +3,19 @@ import { inject, observer } from "@mtfe/wets-mobx";
 
 import "./goods.page.css";
 import GoodsStore from "../../stores/goods";
-import TestStore from "../../stores/test";
 
 interface IData {
   goodsStore: GoodsStore;
-  testStore: TestStore;
   screenHeight: number;
   screenWidth: number;
   lastX: number;
   lastY: number;
   currentGesture: GESTURE;
   // 手势标示
+}
+
+interface IProps {
+  goodsStore: GoodsStore;
 }
 
 @Page.Conf({
@@ -23,7 +25,7 @@ interface IData {
 })
 @inject("goodsStore")
 @observer()
-export class GoodsPage extends Page<any, IData> {
+export class GoodsPage extends Page<IProps, IData> {
   videoCtx: any;
   lastX: 0;
   lastY: 0;
@@ -38,14 +40,17 @@ export class GoodsPage extends Page<any, IData> {
     });
     // screenWidth	屏幕宽度, windowWidth	可使用窗口宽度
     this.test();
-    this.data.goodsStore.getGoodsList();
+    this.props.goodsStore.getGoodsList();
   }
+
+
   test() {
     const ctx = wx.createCanvasContext("my-canvas");
     ctx.setFillStyle("transparent");
     ctx.fillRect(0, 0, this.data.screenWidth, this.data.screenHeight);
     ctx.draw();
   }
+
   // onPullDownRefresh() {
   //   console.log("11111");
   // }
@@ -56,7 +61,6 @@ export class GoodsPage extends Page<any, IData> {
     this.videoCtx.pause();
   }
   handleTouchMove(event: any) {
-    console.log(event);
     if (this.data.currentGesture != GESTURE.NONE) {
       return;
     }
@@ -75,11 +79,11 @@ export class GoodsPage extends Page<any, IData> {
     //上下方向滑动
     else {
       if (ty < 0) {
-        this.data.goodsStore.setCurrentGoods();
+        this.props.goodsStore.setCurrentGoods();
         this.data.currentGesture = GESTURE.UP;
       } else if (ty > 0) {
         this.data.currentGesture = GESTURE.DOWN;
-        this.data.goodsStore.setCurrentGoods();
+        this.props.goodsStore.setCurrentGoods();
       }
     }
 
@@ -89,12 +93,10 @@ export class GoodsPage extends Page<any, IData> {
   }
 
   handleTouchStart(event: any) {
-    console.log(event);
     this.data.lastX = (event.touches[0] as any).x;
     this.data.lastY = (event.touches[0] as any).y;
   }
   handleTouchEnd(event: any) {
-    console.log(event);
     this.data.currentGesture = GESTURE.NONE;
   }
   render() {
