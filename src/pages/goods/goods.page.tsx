@@ -173,7 +173,11 @@ export class GoodsPage extends Page<IProps, IData> {
       },
       () =>
         wx.showToast({
-          title: `${this.data.isSatred ? "么么哒，双击666❤️❤️❤️" : "么么哒，不开森💔💔💔"}`,
+          title: `${
+            this.data.isSatred
+              ? "么么哒，双击666❤️❤️❤️"
+              : "么么哒，不开森💔💔💔"
+          }`,
           icon: "none"
         } as any)
     );
@@ -257,62 +261,68 @@ export class GoodsPage extends Page<IProps, IData> {
               <cover-image src={require("../../asset/img/play.png")} />
             )}
           </cover-view>
-          <cover-view className="hint-area">
-            <cover-view className="star" catchtap={this.star}>
-              <cover-view className="addtional">
-                {this.data.isSatred ? (
+          {!!this.data.goodsStore.currentGoods.taobaoPrice && (
+            <cover-view className="hint-area">
+              <cover-view className="star" catchtap={this.star}>
+                <cover-view className="addtional">
+                  {this.data.isSatred ? (
+                    <cover-image
+                      className="img"
+                      src={require("../../asset/img/star_active.png")}
+                    />
+                  ) : (
+                    <cover-image
+                      className="img"
+                      src={require("../../asset/img/star.png")}
+                    />
+                  )}
+                </cover-view>
+                <cover-view className="count">{currentGoods.stars}</cover-view>
+              </cover-view>
+              <cover-view className="share" catchtap={this.share}>
+                {this.data.isShared ? (
                   <cover-image
                     className="img"
-                    src={require("../../asset/img/star_active.png")}
+                    src={require("../../asset/img/share_active.png")}
                   />
                 ) : (
                   <cover-image
                     className="img"
-                    src={require("../../asset/img/star.png")}
+                    src={require("../../asset/img/share.png")}
                   />
                 )}
-              </cover-view>
-              <cover-view className="count">{currentGoods.stars}</cover-view>
-            </cover-view>
-            <cover-view className="share" catchtap={this.share}>
-              {this.data.isShared ? (
-                <cover-image
-                  className="img"
-                  src={require("../../asset/img/share_active.png")}
-                />
-              ) : (
-                <cover-image
-                  className="img"
-                  src={require("../../asset/img/share.png")}
-                />
-              )}
-              <cover-view className="count">
-                {currentGoods.shareCount}
-              </cover-view>
-            </cover-view>
-          </cover-view>
-          <cover-view className="footer">
-            <cover-view className="recommond">
-              {currentGoods.recommends || ""}
-            </cover-view>
-            <cover-view className="footer-main">
-              <cover-image className="left" src={currentGoods.imgUrl} />
-              <cover-view className="middle">
-                <cover-view className="title">{currentGoods.title}</cover-view>
-                <cover-view className="price">
-                  ￥{currentGoods.price / 100}
-                </cover-view>
-              </cover-view>
-              <cover-view className="right">
-                <cover-view className="buy-btn" catchtap={this.buy}>
-                  立即购买
-                </cover-view>
-                <cover-view className="buy-count">
-                  {currentGoods.buyCount || 0}人已购买
+                <cover-view className="count">
+                  {currentGoods.shareCount}
                 </cover-view>
               </cover-view>
             </cover-view>
-          </cover-view>
+          )}
+          {!!this.data.goodsStore.currentGoods.taobaoPrice && (
+            <cover-view className="footer">
+              <cover-view className="recommond">
+                {currentGoods.recommends || ""}
+              </cover-view>
+              <cover-view className="footer-main">
+                <cover-image className="left" src={currentGoods.imgUrl} />
+                <cover-view className="middle">
+                  <cover-view className="title">
+                    {currentGoods.title}
+                  </cover-view>
+                  <cover-view className="price">
+                    ￥{currentGoods.price / 100}
+                  </cover-view>
+                </cover-view>
+                <cover-view className="right">
+                  <cover-view className="buy-btn" catchtap={this.buy}>
+                    立即购买
+                  </cover-view>
+                  <cover-view className="buy-count">
+                    {currentGoods.buyCount || 0}人已购买
+                  </cover-view>
+                </cover-view>
+              </cover-view>
+            </cover-view>
+          )}
         </canvas>
       </view>
     );
