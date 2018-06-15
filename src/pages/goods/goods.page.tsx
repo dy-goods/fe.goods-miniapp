@@ -85,9 +85,17 @@ export class GoodsPage extends Page<IProps, IData> {
     //上下方向滑动
     else {
       if (ty < 0) {
+        this.setData({
+          isSatred: false,
+          isShared: false,
+        });
         this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
         this.data.currentGesture = GESTURE.UP;
       } else if (ty > 0) {
+        this.setData({
+          isSatred: false,
+          isShared: false,
+        });
         this.data.currentGesture = GESTURE.DOWN;
         this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
       }
@@ -116,9 +124,10 @@ export class GoodsPage extends Page<IProps, IData> {
     });
   }
   share() {
-    wx.showShareMenu({
-      withShareTicket: true,
-    });
+    wx.showToast({
+      title: '亲请点击右上方的转发按钮',
+      icon: 'none'
+    } as any);
     const { shareCount } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
       ...this.data.goodsStore.currentGoods,
