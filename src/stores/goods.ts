@@ -97,6 +97,7 @@ export default class GoodsStore {
             title
             imgUrl
             tkl
+            poster
             recommends
             taobaoPrice
             discount
