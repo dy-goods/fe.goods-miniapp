@@ -173,7 +173,7 @@ export class GoodsPage extends Page<IProps, IData> {
       },
       () =>
         wx.showToast({
-          title: `${this.data.isSatred ? "么么哒,双击666" : "么么哒,不开森"}`,
+          title: `${this.data.isSatred ? "么么哒，双击666❤️❤️❤️" : "么么哒，不开森💔💔💔"}`,
           icon: "none"
         } as any)
     );
@@ -186,7 +186,7 @@ export class GoodsPage extends Page<IProps, IData> {
   }
   share() {
     wx.showToast({
-      title: "么么哒,亲请点击右上方的转发按钮哦",
+      title: "么么哒，喜欢请点右上方的转发按钮哦 😊😊😊",
       icon: "none",
       duration: 3000
     } as any);
@@ -202,7 +202,7 @@ export class GoodsPage extends Page<IProps, IData> {
     });
     wx.showModal({
       title: "立即购买",
-      content: "么么哒,淘口令复制成功,请打开淘宝完成购买哦",
+      content: "么么哒，淘口令已复制，可以打开淘宝购买了哦 😊😊😊",
       showCancel: false,
       success: res => {
         if (res.confirm) {
