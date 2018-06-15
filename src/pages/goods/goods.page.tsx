@@ -32,7 +32,7 @@ export class GoodsPage extends Page<IProps, IData> {
   videoCtx: any;
   lastX: number;
   lastY: number;
-  currentGesture: GESTURE.NONE;
+  currentGesture: GESTURE;
   startX: number;
   startY: number;
   clickCount: number = 0;
@@ -79,7 +79,7 @@ export class GoodsPage extends Page<IProps, IData> {
     if ((event.target.target || event.target.id) !== "my-canvas") {
       return;
     }
-    if (this.data.currentGesture != GESTURE.NONE) {
+    if (this.currentGesture !== GESTURE.NONE) {
       return;
     }
     let currentX = (event.touches[0] as any).x;
@@ -90,18 +90,18 @@ export class GoodsPage extends Page<IProps, IData> {
     this.clickCount = 2;
     if (Math.abs(tx) > Math.abs(ty)) {
       if (tx < 0) {
-        this.data.currentGesture = GESTURE.LEFT;
+        this.currentGesture = GESTURE.LEFT;
       } else if (tx > 0) {
-        this.data.currentGesture = GESTURE.RIGHT;
+        this.currentGesture = GESTURE.RIGHT;
       }
     }
     //上下方向滑动
     else {
       if (ty < 0) {
         this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
-        this.data.currentGesture = GESTURE.UP;
+        this.currentGesture = GESTURE.UP;
       } else if (ty > 0) {
-        this.data.currentGesture = GESTURE.DOWN;
+        this.currentGesture = GESTURE.DOWN;
         this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
       }
       this.setData({
@@ -145,12 +145,12 @@ export class GoodsPage extends Page<IProps, IData> {
     if ((event.target.target || event.target.id) !== "my-canvas") {
       return;
     }
+    this.currentGesture = GESTURE.NONE;
     this.clickCount++;
     if (this.clickCount > 2) {
       this.clickCount = 0;
       return;
     }
-    this.data.currentGesture = GESTURE.NONE;
     const endX = ((event.touches[0] || event.changedTouches[0]) as any).x;
     const endY = ((event.touches[0] || event.changedTouches[0]) as any).y;
     if (Math.abs(this.startX - endX) < 2 && Math.abs(this.startY - endY) < 2) {
