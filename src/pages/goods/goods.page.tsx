@@ -14,6 +14,7 @@ interface IData {
   isShared: boolean;
   price: string;
   taobaoPrice: string;
+  isPlaying: boolean;
 }
 
 interface IProps {
@@ -32,7 +33,6 @@ export class GoodsPage extends Page<IProps, IData> {
   lastX: number;
   lastY: number;
   currentGesture: GESTURE.NONE;
-  isPlaying: boolean = true;
   startX: number;
   startY: number;
   clickCount: number = 0;
@@ -45,7 +45,8 @@ export class GoodsPage extends Page<IProps, IData> {
       screenWidth: rect.screenWidth,
       screenHeight: rect.screenHeight,
       isSatred: false,
-      isShared: false
+      isShared: false,
+      isPlaying: true
     });
     // screenWidth	屏幕宽度, windowWidth	可使用窗口宽度
     this.init();
@@ -62,15 +63,17 @@ export class GoodsPage extends Page<IProps, IData> {
   }
 
   togglePlay() {
-    if (this.isPlaying) {
+    if (this.data.isPlaying) {
       this.videoCtx.pause();
     } else {
       this.videoCtx.play();
     }
-    this.isPlaying = !this.isPlaying;
+    this.setData({
+      isPlaying: !this.data.isPlaying
+    });
   }
   handleTouchMove(event: any) {
-    if (event.target.id !== "my-canvas") {
+    if ((event.target.target || event.target.id) !== "my-canvas") {
       return;
     }
     if (this.data.currentGesture != GESTURE.NONE) {
@@ -81,6 +84,7 @@ export class GoodsPage extends Page<IProps, IData> {
     let tx = currentX - this.lastX;
     let ty = currentY - this.lastY;
     //左右方向滑动
+    this.clickCount = 2;
     if (Math.abs(tx) > Math.abs(ty)) {
       if (tx < 0) {
         this.data.currentGesture = GESTURE.LEFT;
@@ -90,12 +94,11 @@ export class GoodsPage extends Page<IProps, IData> {
     }
     //上下方向滑动
     else {
-      this.clickCount = 2;
       this.setData({
         isSatred: false,
-        isShared: false
+        isShared: false,
+        isPlaying: true
       });
-      this.isPlaying = true;
       if (ty < 0) {
         this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
         this.data.currentGesture = GESTURE.UP;
@@ -111,7 +114,7 @@ export class GoodsPage extends Page<IProps, IData> {
   }
 
   handleTouchStart(event: any) {
-    if (event.target.id !== "my-canvas") {
+    if ((event.target.target || event.target.id) !== "my-canvas") {
       return;
     }
     this.lastX = (event.touches[0] as any).x;
@@ -119,13 +122,24 @@ export class GoodsPage extends Page<IProps, IData> {
     this.startX = (event.touches[0] as any).x;
     this.startY = (event.touches[0] as any).y;
   }
+  onShow() {
+    this.setData({
+      isPlaying: false,
+    });
+  }
+  onReady() {
+    this.setData({
+      isPlaying: true,
+    });
+  }
   handleTouchEnd(event: any) {
-    if (event.target.id !== "my-canvas") {
+    if ((event.target.target || event.target.id) !== "my-canvas") {
       return;
     }
     this.clickCount++;
     if (this.clickCount > 2) {
       this.clickCount = 0;
+      return;
     }
     this.data.currentGesture = GESTURE.NONE;
     const endX = ((event.touches[0] || event.changedTouches[0]) as any).x;
@@ -138,7 +152,7 @@ export class GoodsPage extends Page<IProps, IData> {
         }, 200);
       } else if (this.clickCount === 2) {
         clearTimeout(this.timer);
-        this.star(true);
+        !this.data.isSatred && this.star(true);
         this.clickCount = 0;
       }
     }
@@ -155,7 +169,7 @@ export class GoodsPage extends Page<IProps, IData> {
   }
   share() {
     wx.showToast({
-      title: "亲请点击右上方的转发按钮",
+      title: "么么哒,亲请点击右上方的转发按钮哦",
       icon: "none"
     } as any);
     const { shareCount } = this.data.goodsStore.currentGoods;
@@ -170,7 +184,7 @@ export class GoodsPage extends Page<IProps, IData> {
     });
     wx.showModal({
       title: "立即购买",
-      content: "淘口令复制成功,请打开淘宝完成购买",
+      content: "么么哒,淘口令复制成功,请打开淘宝完成购买哦",
       showCancel: false,
       success: res => {
         if (res.confirm) {
@@ -220,6 +234,11 @@ export class GoodsPage extends Page<IProps, IData> {
           bindtouchmove={this.handleTouchMove}
           bindtouchend={this.handleTouchEnd}
         >
+          <cover-view className="play" catchtap={this.togglePlay}>
+            {!this.data.isPlaying && (
+              <cover-image src={require("../../asset/img/play.png")} />
+            )}
+          </cover-view>
           <cover-view className="hint-area">
             <cover-view className="star" catchtap={this.star}>
               <cover-view className="addtional">
