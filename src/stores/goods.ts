@@ -66,7 +66,7 @@ export default class GoodsStore {
   }
   @action
   setCurrentGoodsById(id?: string) {
-    if (id && this.goodsList && this.getGoodsList.length) {
+    if (id && this.goodsList && this.goodsList.length) {
       const index = this.goodsList.findIndex(
         goods => goods.id === id
       );

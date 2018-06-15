@@ -34,6 +34,7 @@ export class GoodsPage extends Page<IProps, IData> {
   lastX: 0;
   lastY: 0;
   currentGesture: GESTURE.NONE;
+  isPlaying: boolean = false;
   onLoad(options: any) {
     this.videoCtx = wx.createVideoContext("video-container");
     // this.videoCtx.requestFullScreen(0);
@@ -42,7 +43,7 @@ export class GoodsPage extends Page<IProps, IData> {
       screenWidth: rect.screenWidth,
       screenHeight: rect.screenHeight,
       isSatred: false,
-      isShared: false
+      isShared: false,
     });
     // screenWidth	屏幕宽度, windowWidth	可使用窗口宽度
     this.init();
@@ -60,11 +61,13 @@ export class GoodsPage extends Page<IProps, IData> {
     ctx.draw();
   }
 
-  play() {
-    this.videoCtx.play();
-  }
-  pause() {
-    this.videoCtx.pause();
+  togglePlay() {
+    if (this.isPlaying) {
+      this.videoCtx.pause();
+    } else {
+      this.videoCtx.play();
+    }
+    this.isPlaying = !this.isPlaying;
   }
   handleTouchMove(event: any) {
     if (this.data.currentGesture != GESTURE.NONE) {
@@ -89,6 +92,7 @@ export class GoodsPage extends Page<IProps, IData> {
           isSatred: false,
           isShared: false,
         });
+        this.isPlaying = false;
         this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
         this.data.currentGesture = GESTURE.UP;
       } else if (ty > 0) {
@@ -96,6 +100,7 @@ export class GoodsPage extends Page<IProps, IData> {
           isSatred: false,
           isShared: false,
         });
+        this.isPlaying = false;
         this.data.currentGesture = GESTURE.DOWN;
         this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
       }
@@ -174,7 +179,7 @@ export class GoodsPage extends Page<IProps, IData> {
           id="video-container"
           src={currentGoods.videoUrl}
           controls={false}
-          poster="https://p1.pstatp.com/large/8aa1000cf24688239d46.jpg"
+          // poster="https://p1.pstatp.com/large/8aa1000cf24688239d46.jpg"
           show-play-btn={false}
           show-center-play-btn={true}
           autoplay={true}
@@ -186,6 +191,7 @@ export class GoodsPage extends Page<IProps, IData> {
         <canvas
           id="my-canvas"
           canvas-id="my-canvas"
+          bindlongtap={this.togglePlay}
           bindtouchstart={this.handleTouchStart}
           bindtouchmove={this.handleTouchMove}
           bindtouchend={this.handleTouchEnd}
