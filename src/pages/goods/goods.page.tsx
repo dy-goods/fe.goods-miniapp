@@ -12,6 +12,10 @@ interface IData {
   lastY: number;
   currentGesture: GESTURE;
   // 手势标示
+  isSatred: boolean;
+  isShared: boolean;
+  price: string;
+  taobaoPrice: string;
 }
 
 interface IProps {
@@ -19,8 +23,8 @@ interface IProps {
 }
 
 @Page.Conf({
-  navigationBarTitleText: "GoodsPage",
-  disableScroll: true,
+  navigationBarTitleText: "抖友好物说",
+  disableScroll: true
   // enablePullDownRefresh: true
 })
 @inject("goodsStore")
@@ -30,30 +34,32 @@ export class GoodsPage extends Page<IProps, IData> {
   lastX: 0;
   lastY: 0;
   currentGesture: GESTURE.NONE;
-  onLoad() {
+  onLoad(options: any) {
     this.videoCtx = wx.createVideoContext("video-container");
     // this.videoCtx.requestFullScreen(0);
     const rect = wx.getSystemInfoSync();
     this.setData({
       screenWidth: rect.screenWidth,
       screenHeight: rect.screenHeight,
+      isSatred: false,
+      isShared: false
     });
     // screenWidth	屏幕宽度, windowWidth	可使用窗口宽度
-    this.test();
-    this.props.goodsStore.getGoodsList();
+    this.init();
+    this.props.goodsStore
+      .getGoodsList()
+      .then(() =>
+        this.props.goodsStore.setCurrentGoodsById((options && options.id) || "")
+      );
   }
 
-
-  test() {
+  init() {
     const ctx = wx.createCanvasContext("my-canvas");
     ctx.setFillStyle("transparent");
     ctx.fillRect(0, 0, this.data.screenWidth, this.data.screenHeight);
     ctx.draw();
   }
 
-  // onPullDownRefresh() {
-  //   console.log("11111");
-  // }
   play() {
     this.videoCtx.play();
   }
@@ -79,11 +85,11 @@ export class GoodsPage extends Page<IProps, IData> {
     //上下方向滑动
     else {
       if (ty < 0) {
-        this.props.goodsStore.setCurrentGoods();
+        this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
         this.data.currentGesture = GESTURE.UP;
       } else if (ty > 0) {
         this.data.currentGesture = GESTURE.DOWN;
-        this.props.goodsStore.setCurrentGoods();
+        this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
       }
     }
 
@@ -99,7 +105,55 @@ export class GoodsPage extends Page<IProps, IData> {
   handleTouchEnd(event: any) {
     this.data.currentGesture = GESTURE.NONE;
   }
+  star() {
+    this.setData({
+      isSatred: !this.data.isSatred
+    });
+    const { stars } = this.data.goodsStore.currentGoods;
+    this.props.goodsStore.updateGoods({
+      ...this.data.goodsStore.currentGoods,
+      stars: this.data.isSatred ? stars + 1 : stars - 1
+    });
+  }
+  share() {
+    // wx.showShareMenu({
+    //   withShareTicket: true,
+    // });
+    const { shareCount } = this.data.goodsStore.currentGoods;
+    this.props.goodsStore.updateGoods({
+      ...this.data.goodsStore.currentGoods,
+      shareCount: shareCount + 1
+    });
+  }
+  buy() {
+    wx.setClipboardData({
+      data: this.data.goodsStore.currentGoods.tkl
+    });
+    wx.showModal({
+      title: "立即购买",
+      content: "淘口令复制成功,请打开淘宝完成购买",
+      showCancel: false,
+      success: res => {
+        if (res.confirm) {
+          const { buyCount } = this.data.goodsStore.currentGoods;
+          this.props.goodsStore.updateGoods({
+            ...this.data.goodsStore.currentGoods,
+            buyCount: buyCount + 1
+          });
+        }
+      }
+    });
+  }
+  onShareAppMessage() {
+    const { title, imgUrl, id } = this.data.goodsStore.currentGoods;
+    return {
+      title,
+      path: `/page/goods?id=${id}`,
+      imageUrl: imgUrl
+    };
+  }
   render() {
+    const currentGoods = this.data.goodsStore.currentGoods;
     return (
       <view
         className="goods-page"
@@ -109,8 +163,9 @@ export class GoodsPage extends Page<IProps, IData> {
       >
         <video
           id="video-container"
-          src={this.data.goodsStore.currentGoods.videoUrl}
+          src={currentGoods.videoUrl}
           controls={false}
+          poster="https://p1.pstatp.com/large/8aa1000cf24688239d46.jpg"
           show-play-btn={false}
           show-center-play-btn={true}
           autoplay={true}
@@ -126,33 +181,44 @@ export class GoodsPage extends Page<IProps, IData> {
           bindtouchmove={this.handleTouchMove}
           bindtouchend={this.handleTouchEnd}
         >
-          {/* <cover-view className="controls">
-            <cover-view className="play" bindtap={this.play}>
-              <cover-image className="img" src="/path/to/icon_play" />
+          <cover-view className="hint-area">
+            <cover-view className="star" bindtap={this.star}>
+              <cover-image
+                className={`${this.data.isSatred ? "active" : "img"}`}
+                src=""
+              />
+              <cover-view className="count">{currentGoods.stars}</cover-view>
             </cover-view>
-            <cover-view className="pause" bindtap={this.pause}>
-              <cover-image className="img" src="/path/to/icon_pause" />
+            <cover-view className="share" bindtap={this.share}>
+              <button open-type="share" className={`${this.data.isShared ? "active" : "img"}`} />
+              <cover-view className="count">
+                {currentGoods.shareCount}
+              </cover-view>
             </cover-view>
-            <cover-view className="time">00:00</cover-view>
-          </cover-view> */}
+          </cover-view>
+          <cover-view className="footer">
+            <cover-view className="recommond">
+              {currentGoods.recommends || ""}
+            </cover-view>
+            <cover-view className="footer-main">
+              <cover-image className="left" src={currentGoods.imgUrl} />
+              <cover-view className="middle">
+                <cover-view className="title">{currentGoods.title}</cover-view>
+                <cover-view className="price">
+                  ￥{currentGoods.price / 100}
+                </cover-view>
+              </cover-view>
+              <cover-view className="right">
+                <cover-view className="buy-btn" bindtap={this.buy}>
+                  立即购买
+                </cover-view>
+                <cover-view className="buy-count">
+                  {currentGoods.buyCount || 0}人已购买
+                </cover-view>
+              </cover-view>
+            </cover-view>
+          </cover-view>
         </canvas>
-
-        {/* <view className="goods-list">
-          {this.data.goodsStore.goodsList.map((goods, index) => {
-            return (
-              <view key={index}>
-                <view>{goods.title}</view>
-                <video
-                  id="myVideo"
-                  src={goods.videoUrl}
-                  enable-danmu={true}
-                  danmu-btn={true}
-                  controls={true}
-                />
-              </view>
-            );
-          })}
-        </view> */}
       </view>
     );
   }

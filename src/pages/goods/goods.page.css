@@ -17,31 +17,126 @@
     width: 100%;
     height: 100%;
     z-index: 10;
-  }
-  .controls {
-    width: 100%;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    .play,
-    .pause,
-    .text,
-    .time {
-      height: 50px;
-      border: 1px solid red;
-      color: blue;
+    .hint-area {
+      position: absolute;
+      right: 58rpx;
+      bottom: 280rpx;
+      width: 94rpx;
+      cover-view {
+        margin-top: 22rpx;
+      }
+      .count {
+        height: 60rpx;
+        line-height: 40rpx;
+        color: rgba(255, 255, 255, 1);
+        font-size: 28rpx;
+        text-align: center;
+        margin-top: 28rpx;
+      }
+      .star .img {
+        width: 94rpx;
+        height: 94rpx;
+        background: url('../../asset/svg/star.svg') no-repeat center center;
+        background-size: contain;
+      }
+      .star .active {
+        width: 94rpx;
+        height: 94rpx;
+        background: url('../../asset/svg/star_active.svg') no-repeat center center;
+        background-size: contain;
+      }
+      .share .img {
+        width: 94rpx;
+        height: 94rpx;
+        background: url('../../asset/svg/share.svg') no-repeat center center;
+        background-size: contain;
+      }
+      .share .active {
+        width: 94rpx;
+        height: 94rpx;
+        background: url('../../asset/svg/share_active.svg') no-repeat center center;
+        background-size: contain;
+      }
     }
-    .time {
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      line-height: 50px;
-    }
-    .img {
-      width: 100%;
-      height: 100%;
-      margin: 5px auto;
+    .footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 280rpx;
+      .recommond {
+        height: 90rpx;
+        line-height: 90rpx;
+        color: #FAFEFE;
+        font-size: 36rpx;
+        text-align: left;
+        box-sizing: border-box;
+        padding: 0 20rpx;
+      }
+      .footer-main {
+        height: 182rpx;
+        box-sizing: border-box;
+        padding: 20rpx;
+        background-color: #6A605E;
+        opacity: 0.7;
+        color: rgba(16, 16, 16, 1);
+        font-size: 228rpx;
+        text-align: center;
+        border: 1px solid rgba(187, 187, 187, 1);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        .left {
+          width: 142rpx;
+          height: 142rpx;
+          background-size: contain;
+        }
+        .middle {
+          flex: 1;
+          margin: 0 20rpx;
+          align-self: stretch;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          .title {
+            color: #F8F7F8;
+            font-size: 30rpx;
+            text-align: left;
+            word-wrap: break-word;
+            word-break: break-all;
+            max-height: 70rpx;
+            white-space: pre-wrap;
+          }
+          .price {
+            text-align: left;
+            line-height: 40rpx;
+            color: #EE5F2C;
+            font-size: 50rpx;
+          }
+        }
+        .right {
+          align-self: stretch;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          width: 200rpx;
+          text-align: center;
+          .buy-btn {
+            background: #FA329B;
+            width: 100%;
+            height: 85rpx;
+            line-height: 85rpx;
+            text-align: center;
+            border-radius: 40rpx;
+            font-size: 30rpx;
+            color: #F8F7F8;
+          }
+          .buy-count {
+            color: #CDD1D6;
+            font-size: 25rpx;
+          }
+        }
+      }
     }
   }
 }
