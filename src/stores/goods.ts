@@ -3,7 +3,9 @@ import { observable, IObservableArray, action, runInAction } from "mobx";
 import gql from "graphql-tag";
 
 export default class GoodsStore {
-  goodsList: IObservableArray<GOODS.IGoodsType> = observable([]);
+  goodsList: IObservableArray<
+    GOODS.IGoodsType & { isStared?: boolean }
+  > = observable([]);
   @observable
   pageInfo: IPage = {
     pageNo: 1,
@@ -67,9 +69,7 @@ export default class GoodsStore {
   @action
   setCurrentGoodsById(id?: string) {
     if (id && this.goodsList && this.goodsList.length) {
-      const index = this.goodsList.findIndex(
-        goods => goods.id === id
-      );
+      const index = this.goodsList.findIndex(goods => goods.id === id);
       this.setCurrentGoods(this.goodsList[index]);
     } else {
       this.changeCurrentGoods();
@@ -118,7 +118,10 @@ export default class GoodsStore {
     const { items, page } = ret.goods;
     if (items && items.length) {
       runInAction(() => {
-        this.goodsList.replace(items);
+        this.goodsList.replace(items.map(item => ({
+          ...item,
+          isStared: false,
+        })));
         this.pageInfo = page;
       });
       return items;
@@ -152,7 +155,9 @@ export default class GoodsStore {
   }
 
   @action
-  async updateGoods(goods: GOODS.IGoodsType) {
+  async updateGoods(goods: GOODS.IGoodsType & {
+    isStared?: boolean,
+  }) {
     if (!goods.id) {
       return;
     }
@@ -175,7 +180,7 @@ export default class GoodsStore {
       recommends: goods.recommends || "",
       taobaoPrice: goods.taobaoPrice || 0,
       discount: goods.discount || 0,
-      labels: goods.labels || ""
+      labels: goods.labels || "",
     };
     const ret = await client.mutate<{
       updateGoods: boolean;
@@ -191,7 +196,8 @@ export default class GoodsStore {
         const id = this.goodsList.findIndex(item => item.id === input.id);
         this.goodsList[id] = {
           ...this.goodsList[id],
-          ...input
+          ...input,
+          isStared: goods.isStared,
         };
       });
       return true;

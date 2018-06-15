@@ -52,6 +52,9 @@ export class GoodsPage extends Page<IProps, IData> {
     this.init();
     this.props.goodsStore.getGoodsList().then(() => {
       this.props.goodsStore.setCurrentGoodsById((options && options.id) || "");
+      this.setData({
+        isSatred: this.getIsStared()
+      });
     });
   }
 
@@ -94,11 +97,6 @@ export class GoodsPage extends Page<IProps, IData> {
     }
     //上下方向滑动
     else {
-      this.setData({
-        isSatred: false,
-        isShared: false,
-        isPlaying: true
-      });
       if (ty < 0) {
         this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
         this.data.currentGesture = GESTURE.UP;
@@ -106,11 +104,22 @@ export class GoodsPage extends Page<IProps, IData> {
         this.data.currentGesture = GESTURE.DOWN;
         this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
       }
+      this.setData({
+        isSatred: this.getIsStared(),
+        isShared: false,
+        isPlaying: true
+      });
     }
 
     //将当前坐标进行保存以进行下一次计算
     this.lastX = currentX;
     this.lastY = currentY;
+  }
+  getIsStared() {
+    const id = this.data.goodsStore.currentGoods.id;
+    const goods = this.data.goodsStore.goodsList.find(item => item.id === id);
+    const isSatred = goods ? goods.isStared : false;
+    return isSatred;
   }
 
   handleTouchStart(event: any) {
@@ -171,7 +180,8 @@ export class GoodsPage extends Page<IProps, IData> {
     const { stars } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
       ...this.data.goodsStore.currentGoods,
-      stars: this.data.isSatred ? stars + 1 : stars - 1
+      stars: this.data.isSatred ? stars + 1 : stars - 1,
+      isStared: this.data.isSatred
     });
   }
   share() {
