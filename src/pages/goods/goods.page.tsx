@@ -8,8 +8,6 @@ interface IData {
   goodsStore: GoodsStore;
   screenHeight: number;
   screenWidth: number;
-  lastX: number;
-  lastY: number;
   currentGesture: GESTURE;
   // 手势标示
   isSatred: boolean;
@@ -31,10 +29,14 @@ interface IProps {
 @observer()
 export class GoodsPage extends Page<IProps, IData> {
   videoCtx: any;
-  lastX: 0;
-  lastY: 0;
+  lastX: number;
+  lastY: number;
   currentGesture: GESTURE.NONE;
   isPlaying: boolean = false;
+  startX: number;
+  startY: number;
+  clickCount: number = 0;
+  timer: any;
   onLoad(options: any) {
     this.videoCtx = wx.createVideoContext("video-container");
     // this.videoCtx.requestFullScreen(0);
@@ -73,8 +75,8 @@ export class GoodsPage extends Page<IProps, IData> {
     }
     let currentX = (event.touches[0] as any).x;
     let currentY = (event.touches[0] as any).y;
-    let tx = currentX - this.data.lastX;
-    let ty = currentY - this.data.lastY;
+    let tx = currentX - this.lastX;
+    let ty = currentY - this.lastY;
     //左右方向滑动
     if (Math.abs(tx) > Math.abs(ty)) {
       if (tx < 0) {
@@ -105,20 +107,42 @@ export class GoodsPage extends Page<IProps, IData> {
     }
 
     //将当前坐标进行保存以进行下一次计算
-    this.data.lastX = currentX;
-    this.data.lastY = currentY;
+    this.lastX = currentX;
+    this.lastY = currentY;
   }
 
   handleTouchStart(event: any) {
-    this.data.lastX = (event.touches[0] as any).x;
-    this.data.lastY = (event.touches[0] as any).y;
+    this.lastX = (event.touches[0] as any).x;
+    this.lastY = (event.touches[0] as any).y;
+    this.startX = (event.touches[0] as any).x;
+    this.startY = (event.touches[0] as any).y;
   }
   handleTouchEnd(event: any) {
+    this.clickCount++;
     this.data.currentGesture = GESTURE.NONE;
+    const endX = ((event.touches[0] || event.changedTouches[0]) as any).x;
+    const endY = ((event.touches[0] || event.changedTouches[0]) as any).y;
+    if (
+      Math.abs(this.startX - endX) < 2 &&
+      Math.abs(this.startY - endY) < 2
+      
+    ) {
+      if (this.clickCount === 1) {
+        this.timer = setTimeout(() => {
+          this.togglePlay();
+          this.clickCount = 0;
+        }, 200);
+      }  
+      if (this.clickCount === 2) {
+        clearTimeout(this.timer);
+        this.star(true);
+        this.clickCount = 0;
+      }
+    }
   }
-  star() {
+  star(isSatred?: boolean) {
     this.setData({
-      isSatred: !this.data.isSatred
+      isSatred: typeof isSatred === 'boolean' ? isSatred : !this.data.isSatred
     });
     const { stars } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
@@ -180,7 +204,7 @@ export class GoodsPage extends Page<IProps, IData> {
           // poster="https://p1.pstatp.com/large/8aa1000cf24688239d46.jpg"
           show-play-btn={false}
           show-center-play-btn={true}
-          // autoplay={true}
+          autoplay={true}
           loop={true}
           direction={0}
           objectFit="contain"
@@ -189,7 +213,6 @@ export class GoodsPage extends Page<IProps, IData> {
         <canvas
           id="my-canvas"
           canvas-id="my-canvas"
-          bindlongtap={this.togglePlay}
           bindtouchstart={this.handleTouchStart}
           bindtouchmove={this.handleTouchMove}
           bindtouchend={this.handleTouchEnd}
