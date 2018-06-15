@@ -20,3 +20,5 @@ declare const enum GESTURE {
   RIGHT = 4,
   NONE = 0
 }
+
+declare const require: any;

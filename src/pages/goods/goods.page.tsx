@@ -116,9 +116,9 @@ export class GoodsPage extends Page<IProps, IData> {
     });
   }
   share() {
-    // wx.showShareMenu({
-    //   withShareTicket: true,
-    // });
+    wx.showShareMenu({
+      withShareTicket: true,
+    });
     const { shareCount } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
       ...this.data.goodsStore.currentGoods,
@@ -148,7 +148,7 @@ export class GoodsPage extends Page<IProps, IData> {
     const { title, imgUrl, id } = this.data.goodsStore.currentGoods;
     return {
       title,
-      path: `/page/goods?id=${id}`,
+      path: `/pages/goods?id=${id}`,
       imageUrl: imgUrl
     };
   }
@@ -183,14 +183,31 @@ export class GoodsPage extends Page<IProps, IData> {
         >
           <cover-view className="hint-area">
             <cover-view className="star" bindtap={this.star}>
-              <cover-image
-                className={`${this.data.isSatred ? "active" : "img"}`}
-                src=""
-              />
+              {this.data.isSatred ? (
+                <cover-image
+                  className="img"
+                  src={require('../../asset/img/star_active.png')}
+                />
+              ) : (
+                <cover-image
+                  className="img"
+                  src={require('../../asset/img/star.png')}
+                />
+              )}
               <cover-view className="count">{currentGoods.stars}</cover-view>
             </cover-view>
             <cover-view className="share" bindtap={this.share}>
-              <button open-type="share" className={`${this.data.isShared ? "active" : "img"}`} />
+              {this.data.isShared ? (
+                <cover-image
+                  className="img"
+                  src={require('../../asset/img/share_active.png')}
+                />
+              ) : (
+                <cover-image
+                  className="img"
+                  src={require('../../asset/img/share.png')}
+                />
+              )}
               <cover-view className="count">
                 {currentGoods.shareCount}
               </cover-view>

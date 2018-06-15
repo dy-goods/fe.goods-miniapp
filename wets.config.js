@@ -27,6 +27,13 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'graphql-tag/loader',
     });
+    config.module.rules[0].use.push({
+      loader: '@mtfe/wets-image-loader',
+      options: {
+        limit: 8,
+        outputPath: '/statics/'
+      },
+    });
     return config;
   },
 };

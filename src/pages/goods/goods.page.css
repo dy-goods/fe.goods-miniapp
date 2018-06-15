@@ -31,38 +31,17 @@
         color: rgba(255, 255, 255, 1);
         font-size: 28rpx;
         text-align: center;
-        margin-top: 28rpx;
+        margin-top: 18rpx;
       }
-      .star .img {
+      .img {
         width: 94rpx;
-        height: 94rpx;
-        background: url('../../asset/svg/star.svg') no-repeat center center;
-        background-size: contain;
-      }
-      .star .active {
-        width: 94rpx;
-        height: 94rpx;
-        background: url('../../asset/svg/star_active.svg') no-repeat center center;
-        background-size: contain;
-      }
-      .share .img {
-        width: 94rpx;
-        height: 94rpx;
-        background: url('../../asset/svg/share.svg') no-repeat center center;
-        background-size: contain;
-      }
-      .share .active {
-        width: 94rpx;
-        height: 94rpx;
-        background: url('../../asset/svg/share_active.svg') no-repeat center center;
-        background-size: contain;
       }
     }
     .footer {
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 0;
+      bottom: -10rpx;
       height: 280rpx;
       .recommond {
         height: 90rpx;
@@ -77,12 +56,11 @@
         height: 182rpx;
         box-sizing: border-box;
         padding: 20rpx;
-        background-color: #6A605E;
-        opacity: 0.7;
+        background-color: #695F5D;
+        opacity: 0.8;
         color: rgba(16, 16, 16, 1);
         font-size: 228rpx;
         text-align: center;
-        border: 1px solid rgba(187, 187, 187, 1);
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
