@@ -181,11 +181,11 @@ export class GoodsPage extends Page<IProps, IData> {
     });
   }
   onShareAppMessage() {
-    const { title, imgUrl, id } = this.data.goodsStore.currentGoods;
+    const { title, imgUrl, id, poster } = this.data.goodsStore.currentGoods;
     return {
       title,
       path: `/pages/goods?id=${id}`,
-      imageUrl: imgUrl
+      imageUrl: poster || imgUrl
     };
   }
   render() {
@@ -201,7 +201,7 @@ export class GoodsPage extends Page<IProps, IData> {
           id="video-container"
           src={currentGoods.videoUrl}
           controls={false}
-          // poster="https://p1.pstatp.com/large/8aa1000cf24688239d46.jpg"
+          poster={currentGoods.poster || currentGoods.imgUrl}
           show-play-btn={false}
           show-center-play-btn={true}
           autoplay={true}
