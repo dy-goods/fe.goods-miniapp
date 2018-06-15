@@ -43,15 +43,13 @@ export class GoodsPage extends Page<IProps, IData> {
       screenWidth: rect.screenWidth,
       screenHeight: rect.screenHeight,
       isSatred: false,
-      isShared: false,
+      isShared: false
     });
     // screenWidth	屏幕宽度, windowWidth	可使用窗口宽度
     this.init();
-    this.props.goodsStore
-      .getGoodsList()
-      .then(() =>
-        this.props.goodsStore.setCurrentGoodsById((options && options.id) || "")
-      );
+    this.props.goodsStore.getGoodsList().then(() => {
+      this.props.goodsStore.setCurrentGoodsById((options && options.id) || "");
+    });
   }
 
   init() {
@@ -90,7 +88,7 @@ export class GoodsPage extends Page<IProps, IData> {
       if (ty < 0) {
         this.setData({
           isSatred: false,
-          isShared: false,
+          isShared: false
         });
         this.isPlaying = false;
         this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
@@ -98,7 +96,7 @@ export class GoodsPage extends Page<IProps, IData> {
       } else if (ty > 0) {
         this.setData({
           isSatred: false,
-          isShared: false,
+          isShared: false
         });
         this.isPlaying = false;
         this.data.currentGesture = GESTURE.DOWN;
@@ -130,8 +128,8 @@ export class GoodsPage extends Page<IProps, IData> {
   }
   share() {
     wx.showToast({
-      title: '亲请点击右上方的转发按钮',
-      icon: 'none'
+      title: "亲请点击右上方的转发按钮",
+      icon: "none"
     } as any);
     const { shareCount } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
@@ -182,7 +180,7 @@ export class GoodsPage extends Page<IProps, IData> {
           // poster="https://p1.pstatp.com/large/8aa1000cf24688239d46.jpg"
           show-play-btn={false}
           show-center-play-btn={true}
-          autoplay={true}
+          // autoplay={true}
           loop={true}
           direction={0}
           objectFit="contain"
@@ -198,29 +196,31 @@ export class GoodsPage extends Page<IProps, IData> {
         >
           <cover-view className="hint-area">
             <cover-view className="star" bindtap={this.star}>
-              {this.data.isSatred ? (
-                <cover-image
-                  className="img"
-                  src={require('../../asset/img/star_active.png')}
-                />
-              ) : (
-                <cover-image
-                  className="img"
-                  src={require('../../asset/img/star.png')}
-                />
-              )}
+              <cover-view className="addtional">
+                {this.data.isSatred ? (
+                  <cover-image
+                    className="img"
+                    src={require("../../asset/img/star_active.png")}
+                  />
+                ) : (
+                  <cover-image
+                    className="img"
+                    src={require("../../asset/img/star.png")}
+                  />
+                )}
+              </cover-view>
               <cover-view className="count">{currentGoods.stars}</cover-view>
             </cover-view>
             <cover-view className="share" bindtap={this.share}>
               {this.data.isShared ? (
                 <cover-image
                   className="img"
-                  src={require('../../asset/img/share_active.png')}
+                  src={require("../../asset/img/share_active.png")}
                 />
               ) : (
                 <cover-image
                   className="img"
-                  src={require('../../asset/img/share.png')}
+                  src={require("../../asset/img/share.png")}
                 />
               )}
               <cover-view className="count">

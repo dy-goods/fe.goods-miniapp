@@ -19,7 +19,7 @@
     z-index: 10;
     .hint-area {
       position: absolute;
-      right: 58rpx;
+      right: 38rpx;
       bottom: 280rpx;
       width: 94rpx;
       cover-view {
@@ -33,8 +33,13 @@
         text-align: center;
         margin-top: 18rpx;
       }
-      .img {
+      .addtional, .img {
         width: 94rpx;
+        height: 94rpx;
+      }
+      .star .img {
+        width: 94rpx;
+        height: 85rpx;
       }
     }
     .footer {
