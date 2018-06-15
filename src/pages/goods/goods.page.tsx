@@ -32,7 +32,7 @@ export class GoodsPage extends Page<IProps, IData> {
   lastX: number;
   lastY: number;
   currentGesture: GESTURE.NONE;
-  isPlaying: boolean = false;
+  isPlaying: boolean = true;
   startX: number;
   startY: number;
   clickCount: number = 0;
@@ -70,6 +70,9 @@ export class GoodsPage extends Page<IProps, IData> {
     this.isPlaying = !this.isPlaying;
   }
   handleTouchMove(event: any) {
+    if (event.target.id !== "my-canvas") {
+      return;
+    }
     if (this.data.currentGesture != GESTURE.NONE) {
       return;
     }
@@ -87,20 +90,16 @@ export class GoodsPage extends Page<IProps, IData> {
     }
     //上下方向滑动
     else {
+      this.clickCount = 2;
+      this.setData({
+        isSatred: false,
+        isShared: false
+      });
+      this.isPlaying = true;
       if (ty < 0) {
-        this.setData({
-          isSatred: false,
-          isShared: false
-        });
-        this.isPlaying = false;
         this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
         this.data.currentGesture = GESTURE.UP;
       } else if (ty > 0) {
-        this.setData({
-          isSatred: false,
-          isShared: false
-        });
-        this.isPlaying = false;
         this.data.currentGesture = GESTURE.DOWN;
         this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
       }
@@ -112,37 +111,41 @@ export class GoodsPage extends Page<IProps, IData> {
   }
 
   handleTouchStart(event: any) {
+    if (event.target.id !== "my-canvas") {
+      return;
+    }
     this.lastX = (event.touches[0] as any).x;
     this.lastY = (event.touches[0] as any).y;
     this.startX = (event.touches[0] as any).x;
     this.startY = (event.touches[0] as any).y;
   }
   handleTouchEnd(event: any) {
+    if (event.target.id !== "my-canvas") {
+      return;
+    }
     this.clickCount++;
+    if (this.clickCount > 2) {
+      this.clickCount = 0;
+    }
     this.data.currentGesture = GESTURE.NONE;
     const endX = ((event.touches[0] || event.changedTouches[0]) as any).x;
     const endY = ((event.touches[0] || event.changedTouches[0]) as any).y;
-    if (
-      Math.abs(this.startX - endX) < 2 &&
-      Math.abs(this.startY - endY) < 2
-      
-    ) {
+    if (Math.abs(this.startX - endX) < 2 && Math.abs(this.startY - endY) < 2) {
       if (this.clickCount === 1) {
         this.timer = setTimeout(() => {
           this.togglePlay();
           this.clickCount = 0;
         }, 200);
-      }  
-      if (this.clickCount === 2) {
+      } else if (this.clickCount === 2) {
         clearTimeout(this.timer);
         this.star(true);
         this.clickCount = 0;
       }
     }
   }
-  star(isSatred?: boolean) {
+  star(isSatred?: any) {
     this.setData({
-      isSatred: typeof isSatred === 'boolean' ? isSatred : !this.data.isSatred
+      isSatred: typeof isSatred === "boolean" ? isSatred : !this.data.isSatred
     });
     const { stars } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
@@ -218,7 +221,7 @@ export class GoodsPage extends Page<IProps, IData> {
           bindtouchend={this.handleTouchEnd}
         >
           <cover-view className="hint-area">
-            <cover-view className="star" bindtap={this.star}>
+            <cover-view className="star" catchtap={this.star}>
               <cover-view className="addtional">
                 {this.data.isSatred ? (
                   <cover-image
@@ -234,7 +237,7 @@ export class GoodsPage extends Page<IProps, IData> {
               </cover-view>
               <cover-view className="count">{currentGoods.stars}</cover-view>
             </cover-view>
-            <cover-view className="share" bindtap={this.share}>
+            <cover-view className="share" catchtap={this.share}>
               {this.data.isShared ? (
                 <cover-image
                   className="img"
@@ -264,7 +267,7 @@ export class GoodsPage extends Page<IProps, IData> {
                 </cover-view>
               </cover-view>
               <cover-view className="right">
-                <cover-view className="buy-btn" bindtap={this.buy}>
+                <cover-view className="buy-btn" catchtap={this.buy}>
                   立即购买
                 </cover-view>
                 <cover-view className="buy-count">
