@@ -124,12 +124,12 @@ export class GoodsPage extends Page<IProps, IData> {
   }
   onShow() {
     this.setData({
-      isPlaying: false,
+      isPlaying: false
     });
   }
   onReady() {
     this.setData({
-      isPlaying: true,
+      isPlaying: true
     });
   }
   handleTouchEnd(event: any) {
@@ -152,15 +152,22 @@ export class GoodsPage extends Page<IProps, IData> {
         }, 200);
       } else if (this.clickCount === 2) {
         clearTimeout(this.timer);
-        !this.data.isSatred && this.star(true);
+        this.star(true);
         this.clickCount = 0;
       }
     }
   }
   star(isSatred?: any) {
-    this.setData({
-      isSatred: typeof isSatred === "boolean" ? isSatred : !this.data.isSatred
-    });
+    this.setData(
+      {
+        isSatred: typeof isSatred === "boolean" ? isSatred : !this.data.isSatred
+      },
+      () =>
+        wx.showToast({
+          title: `${this.data.isSatred ? "么么哒,双击666" : "么么哒,不开森"}`,
+          icon: "none"
+        } as any)
+    );
     const { stars } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
       ...this.data.goodsStore.currentGoods,
@@ -170,7 +177,8 @@ export class GoodsPage extends Page<IProps, IData> {
   share() {
     wx.showToast({
       title: "么么哒,亲请点击右上方的转发按钮哦",
-      icon: "none"
+      icon: "none",
+      duration: 3000
     } as any);
     const { shareCount } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
