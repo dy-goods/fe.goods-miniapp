@@ -19,7 +19,7 @@ export default class GoodsStore {
     isDeleted: false,
     createdAt: 0,
     updatedAt: 0,
-    videoUrl: "http://7xtj85.com1.z0.glb.clouddn.com/1527589552.mp4", // 视频链接
+    videoUrl: "http://7xtj85.com1.z0.glb.clouddn.com/LC1QBaNkPL0qjgK67n0@@ldregop.mp4", // 视频链接
     stars: 0, // 点赞数
     shareCount: 0, // 分享数
     buyCount: 0, // 购买数量
