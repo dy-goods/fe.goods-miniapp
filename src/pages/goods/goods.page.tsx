@@ -54,7 +54,7 @@ export class GoodsPage extends Page<IProps, IData> {
       this.props.goodsStore.setCurrentGoodsById((options && options.id) || "");
       this.setData({
         isSatred: this.getIsStared(),
-        isShared: this.getIsShared(),
+        isShared: this.getIsShared()
       });
     });
   }
@@ -227,7 +227,7 @@ export class GoodsPage extends Page<IProps, IData> {
           this.props.goodsStore.updateGoods({
             ...this.data.goodsStore.currentGoods,
             shareCount: shareCount + 1,
-            isShared: true,
+            isShared: true
           });
         }
       }
@@ -294,35 +294,34 @@ export class GoodsPage extends Page<IProps, IData> {
               <cover-image src={require("../../asset/img/play.png")} />
             )}
           </cover-view>
-          {!!this.data.goodsStore.currentGoods.taobaoPrice && (
-            <cover-view className="hint-area">
-              <cover-view className="star" catchtap={this.star}>
-                {this.data.isSatred ? (
-                  <cover-image
-                    className="img"
-                    src={require("../../asset/img/star_active.png")}
-                  />
-                ) : (
-                  <cover-image
-                    className="img"
-                    src={require("../../asset/img/star.png")}
-                  />
-                )}
-                <cover-view className="count">
-                  {currentGoods.stars}人喜欢
-                </cover-view>
-              </cover-view>
-              <cover-view className="share" catchtap={this.share}>
+
+          <cover-view className="hint-area">
+            <cover-view className="star" catchtap={this.star}>
+              {this.data.isSatred ? (
                 <cover-image
                   className="img"
-                  src={require("../../asset/img/share.png")}
+                  src={require("../../asset/img/star_active.png")}
                 />
-                <cover-view className="count">
-                  {currentGoods.shareCount}人分享
-                </cover-view>
+              ) : (
+                <cover-image
+                  className="img"
+                  src={require("../../asset/img/star.png")}
+                />
+              )}
+              <cover-view className="count">
+                {currentGoods.stars}人喜欢
               </cover-view>
             </cover-view>
-          )}
+            <cover-view className="share" catchtap={this.share}>
+              <cover-image
+                className="img"
+                src={require("../../asset/img/share.png")}
+              />
+              <cover-view className="count">
+                {currentGoods.shareCount}人分享
+              </cover-view>
+            </cover-view>
+          </cover-view>
           {!!this.data.goodsStore.currentGoods.taobaoPrice && (
             <cover-view className="footer">
               <cover-view className="recommond">
