@@ -53,7 +53,8 @@ export class GoodsPage extends Page<IProps, IData> {
     this.props.goodsStore.getGoodsList().then(() => {
       this.props.goodsStore.setCurrentGoodsById((options && options.id) || "");
       this.setData({
-        isSatred: this.getIsStared()
+        isSatred: this.getIsStared(),
+        isShared: this.getIsShared(),
       });
     });
   }
@@ -111,8 +112,14 @@ export class GoodsPage extends Page<IProps, IData> {
   getIsStared() {
     const id = this.data.goodsStore.currentGoods.id;
     const goods = this.data.goodsStore.goodsList.find(item => item.id === id);
-    const isSatred = goods ? goods.isStared : false;
-    return isSatred;
+    const isStared = goods ? goods.isStared : false;
+    return isStared;
+  }
+  getIsShared() {
+    const id = this.data.goodsStore.currentGoods.id;
+    const goods = this.data.goodsStore.goodsList.find(item => item.id === id);
+    const isShared = goods ? goods.isShared : false;
+    return isShared;
   }
 
   handleTouchStart(event: any) {
@@ -139,11 +146,6 @@ export class GoodsPage extends Page<IProps, IData> {
       return;
     }
     if ([GESTURE.UP, GESTURE.DOWN].includes(this.currentGesture)) {
-      this.setData({
-        isSatred: this.getIsStared(),
-        isShared: false,
-        isPlaying: true
-      });
       switch (this.currentGesture) {
         case GESTURE.UP:
           this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
@@ -154,6 +156,11 @@ export class GoodsPage extends Page<IProps, IData> {
         default:
           break;
       }
+      this.setData({
+        isSatred: this.getIsStared(),
+        isShared: this.getIsShared(),
+        isPlaying: true
+      });
     }
     this.currentGesture = GESTURE.NONE;
     this.clickCount++;
@@ -177,12 +184,12 @@ export class GoodsPage extends Page<IProps, IData> {
     }
   }
   star(isSatred?: any) {
-    const preIsStared = this.data.isSatred;
+    const preIsStared = this.getIsStared();
     this.setData(
       {
         isSatred: typeof isSatred === "boolean" ? isSatred : !this.data.isSatred
       },
-      () =>
+      () => {
         wx.showToast({
           title: `${
             this.data.isSatred
@@ -190,20 +197,21 @@ export class GoodsPage extends Page<IProps, IData> {
               : "么么哒，不开森💔💔💔"
           }`,
           icon: "none"
-        } as any)
+        } as any);
+        if (preIsStared === isSatred && isSatred === true) {
+          return;
+        }
+        const { stars } = this.data.goodsStore.currentGoods;
+        this.props.goodsStore.updateGoods({
+          ...this.data.goodsStore.currentGoods,
+          stars: this.data.isSatred ? stars + 1 : stars - 1,
+          isStared: this.data.isSatred
+        });
+      }
     );
-    if (preIsStared === isSatred) {
-      return;
-    }
-    const { stars } = this.data.goodsStore.currentGoods;
-    this.props.goodsStore.updateGoods({
-      ...this.data.goodsStore.currentGoods,
-      stars: this.data.isSatred ? stars + 1 : stars - 1,
-      isStared: this.data.isSatred
-    });
   }
   share() {
-    const preIsShared = this.data.isShared;
+    const preIsShared = this.getIsShared();
     wx.showToast({
       title: "么么哒，喜欢请点右上方的转发按钮哦 😊😊😊",
       icon: "none",
@@ -218,7 +226,8 @@ export class GoodsPage extends Page<IProps, IData> {
           const { shareCount } = this.data.goodsStore.currentGoods;
           this.props.goodsStore.updateGoods({
             ...this.data.goodsStore.currentGoods,
-            shareCount: shareCount + 1
+            shareCount: shareCount + 1,
+            isShared: true,
           });
         }
       }

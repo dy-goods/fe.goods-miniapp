@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 
 export default class GoodsStore {
   goodsList: IObservableArray<
-    GOODS.IGoodsType & { isStared?: boolean }
+    GOODS.IGoodsType & { isStared?: boolean, isShared?: boolean }
   > = observable([]);
   @observable
   pageInfo: IPage = {
@@ -121,6 +121,7 @@ export default class GoodsStore {
         this.goodsList.replace(items.map(item => ({
           ...item,
           isStared: false,
+          isShared: false,
         })));
         this.pageInfo = page;
       });
@@ -157,6 +158,7 @@ export default class GoodsStore {
   @action
   async updateGoods(goods: GOODS.IGoodsType & {
     isStared?: boolean,
+    isShared?: boolean,
   }) {
     if (!goods.id) {
       return;
@@ -194,11 +196,11 @@ export default class GoodsStore {
       runInAction(() => {
         this.setCurrentGoods(goods);
         const id = this.goodsList.findIndex(item => item.id === input.id);
-        this.goodsList[id] = {
+        const temp = {
           ...this.goodsList[id],
-          ...input,
-          isStared: goods.isStared,
+          ...goods,
         };
+        this.goodsList[id] = temp;
       });
       return true;
     }
