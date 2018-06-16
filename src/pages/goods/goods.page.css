@@ -27,9 +27,9 @@
     }
     .hint-area {
       position: absolute;
-      right: 38rpx;
+      right: 20rpx;
       bottom: 260rpx;
-      width: 120rpx;
+      width: 140rpx;
       cover-view {
         margin-top: 22rpx;
       }
