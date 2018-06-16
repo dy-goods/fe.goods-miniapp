@@ -177,6 +177,7 @@ export class GoodsPage extends Page<IProps, IData> {
     }
   }
   star(isSatred?: any) {
+    const preIsStared = this.data.isSatred;
     this.setData(
       {
         isSatred: typeof isSatred === "boolean" ? isSatred : !this.data.isSatred
@@ -191,6 +192,9 @@ export class GoodsPage extends Page<IProps, IData> {
           icon: "none"
         } as any)
     );
+    if (preIsStared === isSatred) {
+      return;
+    }
     const { stars } = this.data.goodsStore.currentGoods;
     this.props.goodsStore.updateGoods({
       ...this.data.goodsStore.currentGoods,
@@ -199,16 +203,26 @@ export class GoodsPage extends Page<IProps, IData> {
     });
   }
   share() {
+    const preIsShared = this.data.isShared;
     wx.showToast({
       title: "么么哒，喜欢请点右上方的转发按钮哦 😊😊😊",
       icon: "none",
       duration: 3000
     } as any);
-    const { shareCount } = this.data.goodsStore.currentGoods;
-    this.props.goodsStore.updateGoods({
-      ...this.data.goodsStore.currentGoods,
-      shareCount: shareCount + 1
-    });
+    this.setData(
+      {
+        isShared: true
+      },
+      () => {
+        if (!preIsShared) {
+          const { shareCount } = this.data.goodsStore.currentGoods;
+          this.props.goodsStore.updateGoods({
+            ...this.data.goodsStore.currentGoods,
+            shareCount: shareCount + 1
+          });
+        }
+      }
+    );
   }
   buy() {
     wx.setClipboardData({
@@ -290,17 +304,10 @@ export class GoodsPage extends Page<IProps, IData> {
                 </cover-view>
               </cover-view>
               <cover-view className="share" catchtap={this.share}>
-                {this.data.isShared ? (
-                  <cover-image
-                    className="img"
-                    src={require("../../asset/img/share_active.png")}
-                  />
-                ) : (
-                  <cover-image
-                    className="img"
-                    src={require("../../asset/img/share.png")}
-                  />
-                )}
+                <cover-image
+                  className="img"
+                  src={require("../../asset/img/share.png")}
+                />
                 <cover-view className="count">
                   {currentGoods.shareCount}人分享
                 </cover-view>
