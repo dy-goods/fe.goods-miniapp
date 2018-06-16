@@ -98,17 +98,10 @@ export class GoodsPage extends Page<IProps, IData> {
     //上下方向滑动
     else {
       if (ty < 0) {
-        this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
         this.currentGesture = GESTURE.UP;
       } else if (ty > 0) {
         this.currentGesture = GESTURE.DOWN;
-        this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
       }
-      this.setData({
-        isSatred: this.getIsStared(),
-        isShared: false,
-        isPlaying: true
-      });
     }
 
     //将当前坐标进行保存以进行下一次计算
@@ -144,6 +137,23 @@ export class GoodsPage extends Page<IProps, IData> {
   handleTouchEnd(event: any) {
     if ((event.target.target || event.target.id) !== "my-canvas") {
       return;
+    }
+    if ([GESTURE.UP, GESTURE.DOWN].includes(this.currentGesture)) {
+      this.setData({
+        isSatred: this.getIsStared(),
+        isShared: false,
+        isPlaying: true
+      });
+      switch (this.currentGesture) {
+        case GESTURE.UP:
+          this.props.goodsStore.changeCurrentGoods(GESTURE.UP);
+          break;
+        case GESTURE.DOWN:
+          this.props.goodsStore.changeCurrentGoods(GESTURE.DOWN);
+          break;
+        default:
+          break;
+      }
     }
     this.currentGesture = GESTURE.NONE;
     this.clickCount++;
