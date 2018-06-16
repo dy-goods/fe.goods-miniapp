@@ -274,20 +274,20 @@ export class GoodsPage extends Page<IProps, IData> {
           {!!this.data.goodsStore.currentGoods.taobaoPrice && (
             <cover-view className="hint-area">
               <cover-view className="star" catchtap={this.star}>
-                <cover-view className="addtional">
-                  {this.data.isSatred ? (
-                    <cover-image
-                      className="img"
-                      src={require("../../asset/img/star_active.png")}
-                    />
-                  ) : (
-                    <cover-image
-                      className="img"
-                      src={require("../../asset/img/star.png")}
-                    />
-                  )}
+                {this.data.isSatred ? (
+                  <cover-image
+                    className="img"
+                    src={require("../../asset/img/star_active.png")}
+                  />
+                ) : (
+                  <cover-image
+                    className="img"
+                    src={require("../../asset/img/star.png")}
+                  />
+                )}
+                <cover-view className="count">
+                  {currentGoods.stars}人喜欢
                 </cover-view>
-                <cover-view className="count">{currentGoods.stars}</cover-view>
               </cover-view>
               <cover-view className="share" catchtap={this.share}>
                 {this.data.isShared ? (
@@ -302,7 +302,7 @@ export class GoodsPage extends Page<IProps, IData> {
                   />
                 )}
                 <cover-view className="count">
-                  {currentGoods.shareCount}
+                  {currentGoods.shareCount}人分享
                 </cover-view>
               </cover-view>
             </cover-view>

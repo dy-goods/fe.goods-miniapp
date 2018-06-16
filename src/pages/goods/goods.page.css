@@ -28,8 +28,8 @@
     .hint-area {
       position: absolute;
       right: 38rpx;
-      bottom: 280rpx;
-      width: 94rpx;
+      bottom: 260rpx;
+      width: 120rpx;
       cover-view {
         margin-top: 22rpx;
       }
@@ -38,28 +38,34 @@
         line-height: 40rpx;
         color: rgba(255, 255, 255, 1);
         font-size: 28rpx;
-        text-align: center;
         margin-top: 18rpx;
       }
-      .addtional, .img {
-        width: 94rpx;
-        height: 94rpx;
+      .share,
+      .star {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .share .img {
+        width: 80rpx;
+        height: 80rpx;
       }
       .star .img {
-        width: 94rpx;
-        height: 85rpx;
+        width: 80rpx;
+        height: 71rpx;
       }
     }
     .footer {
       position: absolute;
       left: 0;
       right: 0;
-      bottom: -10rpx;
+      bottom: -30rpx;
       height: 280rpx;
       .recommond {
-        height: 90rpx;
-        line-height: 90rpx;
-        color: #FAFEFE;
+        height: 70rpx;
+        line-height: 70rpx;
+        color: #fafefe;
         font-size: 36rpx;
         text-align: left;
         box-sizing: border-box;
@@ -69,7 +75,7 @@
         height: 182rpx;
         box-sizing: border-box;
         padding: 20rpx;
-        background-color: #695F5D;
+        background-color: #695f5d;
         opacity: 0.8;
         color: rgba(16, 16, 16, 1);
         font-size: 228rpx;
@@ -90,18 +96,18 @@
           flex-direction: column;
           justify-content: space-around;
           .title {
-            color: #F8F7F8;
-            font-size: 30rpx;
             text-align: left;
+            color: #f8f7f8;
+            font-size: 30rpx;
             word-wrap: break-word;
             word-break: break-all;
             max-height: 70rpx;
-            white-space: pre-wrap;
+            white-space: pre-line;
           }
           .price {
             text-align: left;
             line-height: 40rpx;
-            color: #EE5F2C;
+            color: #ee5f2c;
             font-size: 50rpx;
           }
         }
@@ -113,17 +119,17 @@
           width: 200rpx;
           text-align: center;
           .buy-btn {
-            background: #FA329B;
+            background: #fa329b;
             width: 100%;
             height: 85rpx;
             line-height: 85rpx;
             text-align: center;
             border-radius: 40rpx;
             font-size: 30rpx;
-            color: #F8F7F8;
+            color: #f8f7f8;
           }
           .buy-count {
-            color: #CDD1D6;
+            color: #cdd1d6;
             font-size: 25rpx;
           }
         }
