@@ -24,21 +24,21 @@ interface IProps {
 @Page.Conf({
   navigationBarTitleText: "抖友好物说",
   disableScroll: true
-  // enablePullDownRefresh: true
+  enablePullDownRefresh: true
 })
 @inject("goodsStore")
 @observer()
 export class GoodsPage extends Page<IProps, IData> {
   videoCtx: any;
-  lastX: number;
-  lastY: number;
+  lastX: number = 0;
+  lastY: number = 0;
   currentGesture: GESTURE;
-  startX: number;
-  startY: number;
+  startX: number = 0;
+  startY: number = 0;
   clickCount: number = 0;
   timer: any;
   onLoad(options: any) {
-    this.videoCtx = wx.createVideoContext("video-container");
+    // this.videoCtx = wx.createVideoContext("video-container");
     // this.videoCtx.requestFullScreen(0);
     const rect = wx.getSystemInfoSync();
     this.setData({
@@ -241,7 +241,7 @@ export class GoodsPage extends Page<IProps, IData> {
       title: "立即购买",
       content: "么么哒，淘口令已复制，可以打开淘宝购买了哦 😊😊😊",
       showCancel: false,
-      success: res => {
+      success: (res: any) => {
         if (res.confirm) {
           const { buyCount } = this.data.goodsStore.currentGoods;
           this.props.goodsStore.updateGoods({
@@ -289,12 +289,14 @@ export class GoodsPage extends Page<IProps, IData> {
           bindtouchmove={this.handleTouchMove}
           bindtouchend={this.handleTouchEnd}
         >
+          {/* <button className="share-btn" open-type="share">
+            share
+          </button> */}
           <cover-view className="play" catchtap={this.togglePlay}>
             {!this.data.isPlaying && (
               <cover-image src={require("../../asset/img/play.png")} />
             )}
           </cover-view>
-
           <cover-view className="hint-area">
             <cover-view className="star" catchtap={this.star}>
               {this.data.isSatred ? (
@@ -309,7 +311,8 @@ export class GoodsPage extends Page<IProps, IData> {
                 />
               )}
               <cover-view className="count">
-                {currentGoods.stars}人喜欢
+                {currentGoods.stars}
+                人喜欢
               </cover-view>
             </cover-view>
             <cover-view className="share" catchtap={this.share}>
@@ -318,7 +321,8 @@ export class GoodsPage extends Page<IProps, IData> {
                 src={require("../../asset/img/share.png")}
               />
               <cover-view className="count">
-                {currentGoods.shareCount}人分享
+                {currentGoods.shareCount}
+                人分享
               </cover-view>
             </cover-view>
           </cover-view>
@@ -342,7 +346,8 @@ export class GoodsPage extends Page<IProps, IData> {
                     立即购买
                   </cover-view>
                   <cover-view className="buy-count">
-                    {currentGoods.buyCount || 0}人已购买
+                    {currentGoods.buyCount || 0}
+                    人已购买
                   </cover-view>
                 </cover-view>
               </cover-view>

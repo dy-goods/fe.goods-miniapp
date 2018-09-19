@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 
 export default class GoodsStore {
   goodsList: IObservableArray<
-    GOODS.IGoodsType & { isStared?: boolean, isShared?: boolean }
+    GOODS.IGoodsType & { isStared?: boolean; isShared?: boolean }
   > = observable([]);
   @observable
   pageInfo: IPage = {
@@ -15,21 +15,23 @@ export default class GoodsStore {
   };
   @observable
   currentGoods: GOODS.IGoodsType = {
-    id: "",
+    id: "111",
     isDeleted: false,
     createdAt: 0,
     updatedAt: 0,
-    videoUrl: "http://7xtj85.com1.z0.glb.clouddn.com/LC1QBaNkPL0qjgK67n0@@ldregop.mp4", // 视频链接
+    videoUrl:
+      "http://7xtj85.com1.z0.glb.clouddn.com/LC1QBaNkPL0qjgK67n0@@ldregop.mp4", // 视频链接
     stars: 0, // 点赞数
     shareCount: 0, // 分享数
     buyCount: 0, // 购买数量
     price: 0, // 以分为单位
     title: "", // 标题
-    imgUrl: "", // 图片链接
+    imgUrl:
+      "https://cdn.v2ex.com/avatar/5987/bc50/78391_normal.png?m=1504861781", // 图片链接
     tkl: "", // 淘口令
 
-    recommends: "", // 推荐语
-    taobaoPrice: 0, // 淘宝价格
+    recommends: "推荐语", // 推荐语
+    taobaoPrice: 123, // 淘宝价格
     discount: 0, // 折扣
     labels: "" // 标签, eg好玩到爆，省事的气球车
   };
@@ -118,11 +120,13 @@ export default class GoodsStore {
     const { items, page } = ret.goods;
     if (items && items.length) {
       runInAction(() => {
-        this.goodsList.replace(items.map(item => ({
-          ...item,
-          isStared: false,
-          isShared: false,
-        })));
+        this.goodsList.replace(
+          items.map(item => ({
+            ...item,
+            isStared: false,
+            isShared: false
+          }))
+        );
         this.pageInfo = page;
       });
       return items;
@@ -156,10 +160,12 @@ export default class GoodsStore {
   }
 
   @action
-  async updateGoods(goods: GOODS.IGoodsType & {
-    isStared?: boolean,
-    isShared?: boolean,
-  }) {
+  async updateGoods(
+    goods: GOODS.IGoodsType & {
+      isStared?: boolean;
+      isShared?: boolean;
+    }
+  ) {
     if (!goods.id) {
       return;
     }
@@ -182,7 +188,7 @@ export default class GoodsStore {
       recommends: goods.recommends || "",
       taobaoPrice: goods.taobaoPrice || 0,
       discount: goods.discount || 0,
-      labels: goods.labels || "",
+      labels: goods.labels || ""
     };
     const ret = await client.mutate<{
       updateGoods: boolean;
@@ -198,7 +204,7 @@ export default class GoodsStore {
         const id = this.goodsList.findIndex(item => item.id === input.id);
         const temp = {
           ...this.goodsList[id],
-          ...goods,
+          ...goods
         };
         this.goodsList[id] = temp;
       });

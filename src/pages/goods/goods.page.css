@@ -1,10 +1,17 @@
 .goods-page {
   overflow: hidden;
   position: relative;
+
   .test {
     word-wrap: break-word;
     word-break: break-all;
   }
+
+  .share-btn {
+    width: 100px;
+    height: 100px;
+  }
+
   #video-container {
     position: absolute;
     width: 100%;
@@ -12,11 +19,13 @@
     display: block;
     z-index: 1;
   }
+
   #my-canvas {
     position: absolute;
     width: 100%;
     height: 100%;
     z-index: 10;
+
     .play {
       position: absolute;
       left: 50%;
@@ -25,14 +34,17 @@
       height: 94rpx;
       transform: translate(-50%, -50%);
     }
+
     .hint-area {
       position: absolute;
       right: 20rpx;
       bottom: 260rpx;
       width: 140rpx;
+
       cover-view {
         margin-top: 22rpx;
       }
+
       .count {
         height: 60rpx;
         line-height: 40rpx;
@@ -40,6 +52,7 @@
         font-size: 28rpx;
         margin-top: 18rpx;
       }
+
       .share,
       .star {
         display: flex;
@@ -47,21 +60,25 @@
         justify-content: center;
         align-items: center;
       }
+
       .share .img {
         width: 80rpx;
         height: 80rpx;
       }
+
       .star .img {
         width: 80rpx;
         height: 71rpx;
       }
     }
+
     .footer {
       position: absolute;
       left: 0;
       right: 0;
       bottom: -30rpx;
       height: 280rpx;
+
       .recommond {
         height: 70rpx;
         line-height: 70rpx;
@@ -71,6 +88,7 @@
         box-sizing: border-box;
         padding: 0 20rpx;
       }
+
       .footer-main {
         height: 182rpx;
         box-sizing: border-box;
@@ -83,11 +101,13 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
+
         .left {
           width: 142rpx;
           height: 142rpx;
           background-size: contain;
         }
+
         .middle {
           flex: 1;
           margin: 0 20rpx;
@@ -95,6 +115,7 @@
           display: flex;
           flex-direction: column;
           justify-content: space-around;
+
           .title {
             text-align: left;
             color: #f8f7f8;
@@ -104,6 +125,7 @@
             max-height: 70rpx;
             white-space: pre-line;
           }
+
           .price {
             text-align: left;
             line-height: 40rpx;
@@ -111,6 +133,7 @@
             font-size: 50rpx;
           }
         }
+
         .right {
           align-self: stretch;
           display: flex;
@@ -118,6 +141,7 @@
           justify-content: space-between;
           width: 200rpx;
           text-align: center;
+
           .buy-btn {
             background: #fa329b;
             width: 100%;
@@ -128,6 +152,7 @@
             font-size: 30rpx;
             color: #f8f7f8;
           }
+
           .buy-count {
             color: #cdd1d6;
             font-size: 25rpx;

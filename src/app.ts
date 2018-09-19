@@ -1,25 +1,30 @@
-import { App } from '@mtfe/wets';
-import { Provider } from '@mtfe/wets-mobx';
-import { route } from '@mtfe/wets-mobx';
+import { App } from "@mtfe/wets";
+import { Provider } from "@mtfe/wets-mobx";
+import { route } from "@mtfe/wets-mobx";
 
-import store from '../src/stores';
+import store from "../src/stores";
 
 route.prototype.setUrlOption({
-  protocol: 'https',
-  host: 'cnodejs.org'
+  protocol: "https",
+  host: "cnodejs.org"
 });
 
 @App.Conf({
   window: {
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTextStyle: 'black',
-    backgroundColor: '#fff',
+    navigationBarBackgroundColor: "#fff",
+    navigationBarTextStyle: "black",
+    backgroundColor: "#fff"
     navigationStyle: 'custom',
-  },
+  }
 })
 @Provider({
-  store,
+  store
 })
 export class MyApp extends App {
   store: any;
+  onLaunch() {
+    if (typeof tt !== "undefined") {
+      wx = tt;
+    }
+  }
 }

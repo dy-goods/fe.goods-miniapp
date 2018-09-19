@@ -14,7 +14,8 @@ export type Topic = {
 };
 
 export default class Person {
-  @observable random = Math.random();
+  @observable
+  random = Math.random();
   @observable
   topicList = [
     {
@@ -127,7 +128,7 @@ export default class Person {
 
   @action
   @route("/api/v1/topics", "GET")
-  * getTopicList1(tab: string) {
+  *getTopicList1(tab: string) {
     const query = {
       page: 1,
       limit: 10,

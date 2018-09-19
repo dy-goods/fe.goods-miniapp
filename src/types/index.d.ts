@@ -22,3 +22,4 @@ declare const enum GESTURE {
 }
 
 declare const require: any;
+declare const tt: any;

@@ -2,12 +2,17 @@
   "name": "fe.money",
   "version": "0.1.0",
   "private": true,
+  "dependencies": {
+    "@mtfe/wets-mobx": "1.0.19",
+    "mobx": "3.3.0"
+  },
   "devDependencies": {
-    "@mtfe/wets": "^1.1.0-beta.2",
-    "@mtfe/wets-cli": "^0.1.21",
+    "@mtfe/wets": "1.1.0-beta.1",
+    "@mtfe/wets-cli": "0.1.20",
     "@mtfe/wets-graphql": "^1.1.0-beta.1",
     "@mtfe/wets-image-loader": "^1.0.13",
     "@mtfe/wets-redux": "^1.1.0-beta.1",
+    "@mtfe/wets-tsx-loader": "2.1.2",
     "@mtfe/wets-types": "^1.1.0-beta.5",
     "@mtfe/wets-wx-extra": "^1.1.0-beta.2",
     "apollo-client": "^2.3.2",
@@ -20,9 +25,5 @@
     "start": "wets start",
     "build": "wets build",
     "build:prod": "wets build -p"
-  },
-  "dependencies": {
-    "@mtfe/wets-mobx": "^1.0.6",
-    "mobx": "^3.4.1"
   }
 }
