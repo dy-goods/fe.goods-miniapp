@@ -61,7 +61,7 @@ export class GoodsPage extends Page<IProps, IData> {
 
   init() {
     const ctx = wx.createCanvasContext("my-canvas");
-    ctx.setFillStyle("transparent");
+    // ctx.setFillStyle("transparent");
     ctx.fillRect(0, 0, this.data.screenWidth, this.data.screenHeight);
     ctx.draw();
   }
